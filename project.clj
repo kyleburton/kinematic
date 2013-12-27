@@ -7,9 +7,10 @@
   :local-repo-classpath true
 
   :plugins [[lein-release/lein-release "1.0.5"]
-            [lein-swank "1.4.5"]]
-
-  :profiles             {:dev {:dependencies []}
+            [lein-swank                "1.4.5"]]
+  :profiles             {:dev {:dependencies [[org.clojure/clojure "1.6.0-master-SNAPSHOT"]
+                                              [org.clojure/data.json      "0.2.3"]
+                                              [http-kit "2.1.13"]]}
                          :1.2 {:dependencies [[org.clojure/clojure "1.2.0"]
                                               [org.clojure/data.json      "0.2.2"]]}
                          :1.3 {:dependencies [[org.clojure/clojure "1.3.0"]
@@ -25,4 +26,5 @@
   :dependencies         [[org.clojure/tools.namespace          "0.1.0"]
                          [ring/ring-core                       "1.1.8"]
                          [ring/ring-jetty-adapter              "1.1.8"]
+                         [commons-io/commons-io                "2.4"]
                          [com.github.kyleburton/clj-etl-utils  "1.0.79"]])

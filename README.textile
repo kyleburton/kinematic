@@ -1,4 +1,17 @@
-NB: the master branch is for Clojure 1.3 support.  For Clojure 1.2 support, use the clojure-1.2 branch.
+branch: k2
+
+Exploratory branch:
+
+* easy configuration with sensible defaults
+* defense against large inputs: use commons-io BoundedInputStream
+* move from Jetty to http-kit, or create helper libs/plugins for each server type
+* response encoding based on requested content-type: json, xml, edn
+* Multiple Apps mounted in 1 server
+* kinematic.mq: bake CQRS concepts into kinematic; async and rpc via queues, simpler callbacks for async rpc
+* kinematic.rpc.sync: json/edn over HTTP (http-kit/client) or raw sockets (zeromq)
+* kinematic.rpc.async: rpc with a 'callback' either over a socket or an mq with delivery back
+
+
 h1. Overview
 
 Kinematic provides a simple library for doing dynamic web development with clojure. Although currently, it is mainly geared towards creating a JSON pump to your frontend API, it can be expanded in the future to be a more full-featured web development framework.

@@ -1,11 +1,11 @@
 (ns kinematic.dsl
   (:require
-   [clojure.data.json :as json]
-   [clj-etl-utils.log    :as log])
+   [clojure.data.json        :as json]
+   [clj-etl-utils.log        :as log])
   (:use
    [clj-etl-utils.lang-utils :only [raise]]
    kinematic.core
-   [kinematic.servers      :only [restart-jetty-server]]
+   [kinematic.servers        :only [restart-jetty-server]]
    ring.util.response
    ring.middleware.params
    ring.middleware.keyword-params))
@@ -76,7 +76,8 @@
         mount-point   (get opts :mount-point "/")
         app-ns-prefix (get opts :app-ns-prefix)]
     `(do
-       (load-and-register ~app-ns-prefix)
+       (when (not (nil? ~app-ns-prefix))
+        (load-and-register ~app-ns-prefix))
        (auto-routes ~app-name)
        (register-dispatcher ~app-name ~opts)
        (when (:log4j-config-file ~opts)
