@@ -1,6 +1,8 @@
 (ns kinematic.router
+  (:require
+   [clojure.string :as string])
   (:use
-   [clj-etl-utils.lang-utils :only [raise]]))
+   [kinematic.util :only [substr]]))
 
 
 (comment
@@ -18,37 +20,18 @@
 
   )
 
-(defn substr
-  ([^String s start]
-     (cond
-       (nil? s)
-       ""
-       (> start (count s))
-       ""
-       :ok
-       (.substring s start)))
-  ([^String s start end]
-     (cond
-       (nil? s)
-       ""
-       (> start (count s))
-       ""
-
-       (> end (count s))
-       (.substring s start)
-
-       :ok
-       (.substring s start end))))
-
 (defn pattern-matches-uri? [^String mount-point ^String pattern ^String uri]
-  (let [uri           (substr uri (count mount-point))
-        uri           (if (.startsWith uri "/")
-                        (substr uri 1)
-                        uri)
-        pattern-parts (.split pattern "/")
-        uri-parts     (.split uri     "/")]
-    (if (not (= (count pattern-parts)
-                (count uri-parts)))
+  (let [uri             (substr uri (count mount-point))
+        uri             (if (.startsWith uri "/")
+                          (substr uri 1)
+                          uri)
+        pattern-parts   (.split pattern "/")
+        uri-parts       (.split uri     "/")
+        contains-splat? (not= -1 (.indexOf pattern "*"))]
+    (if (and
+         (not contains-splat?)
+         (not (= (count pattern-parts)
+                 (count uri-parts))))
       {:matched      false
        :route-params {}
        ;; :reason (format "Count mismatch: %s vs %s"
@@ -70,6 +53,12 @@
           (recur pattern-parts uri-parts (assoc route-params (keyword (substr pp 1))
                                                 up))
 
+          (.startsWith pp "*")
+          {:matched true
+           :route-params (assoc route-params
+                           (keyword (substr pp 1))
+                           (string/join "/" (cons up uri-parts)))}
+
           (= pp up)
           (recur pattern-parts uri-parts route-params)
 
@@ -78,3 +67,10 @@
            :route-params route-params
            ;; :reason       "Fell through."
            })))))
+
+(comment
+
+  (pattern-matches-uri? "/my-app" "users/:id/*rest"
+                                      "/my-app/users/1234/some/more/stuff")
+
+)

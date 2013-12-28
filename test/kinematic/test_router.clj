@@ -38,7 +38,11 @@
   (is (= {:matched true  :route-params {}} (router/pattern-matches-uri? "/my-app" "index" "/my-app/index")))
   (is (= {:matched false :route-params {}} (router/pattern-matches-uri? "/my-app" "index" "/my-app/index/banana")))
   (is (= {:matched true  :route-params {:id "1234"}}
-         (router/pattern-matches-uri? "/my-app" "users/:id" "/my-app/users/1234"))))
+         (router/pattern-matches-uri? "/my-app" "users/:id" "/my-app/users/1234")))
+  (is (= {:matched true :route-params {:rest "some/more/stuff"
+                                       :id   "1234"}}
+         (router/pattern-matches-uri? "/my-app" "users/:id/*rest"
+                                      "/my-app/users/1234/some/more/stuff"))))
 
 (comment
 
