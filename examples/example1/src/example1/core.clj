@@ -24,20 +24,20 @@
 (kdsl/defweb :example1
   :mount-point       "/"
 
-  ;; :app-ns-prefix is spidered by Kinematic, which will require any
-  ;; namespaces that use this prefix.  This lets you write new
+  ;; :autoload-ns-prefix is spidered by Kinematic, which will require
+  ;; any namespaces that use this prefix.  This lets you write new
   ;; handlers without having to explicitly require them anywhere else
   ;; in your code.
-  :app-ns-prefix     :example1.web
+  :autoload-ns-prefix     :example1.web
 
   ;; :before-middleware is an optional vector of ring middleware.
-  :before-middleware []
+  :before []
 
   ;; NB: is this even supported?
-  :after-middleware  []
+  :after  []
 
   ;; NB: should there be default behavior here?
-  :404-page          "resources/public/404.html")
+  :error-handlers {404 "resources/public/404.html"})
 
 (defonce stop-server-fn (atom nil))
 

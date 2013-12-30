@@ -6,17 +6,24 @@
 
 
 (comment
+  ;; an app has a name
+  ;; it can have a set of before middleware
+  ;; it can have a set of after middleware
+  ;; it can have 'around' middleware
+  ;; it has a routing table
+  ;; * a list of routes to NS mappings
+  ;;    * namespace for handlers (http verbs: GET, PUT, POST, DELETE)
+  ;;    * one or more uri-patterns
+  ;;    * optional :before, or :after middleware
 
   (defapp :my-app
     :mount-point "/my-app"
     :before      [#_"seq of kinematic handlers"]
     :after       [#_"seq of kinematic handlers"])
 
-
   (api/register :my-app ["/index"]
                 :before [#_"seq of kinematic handlers"]
                 :after  [#_"seq of kinematic handlers"])
-
 
   )
 

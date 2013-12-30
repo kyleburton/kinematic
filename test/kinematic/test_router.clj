@@ -46,5 +46,12 @@
 
 (comment
 
+  (kinematic.core/make-application
+   :my-app {})
+
+  (kinematic.core/register-route :my-app ["/index"] {"GET" (fn [& args])})
+
+  (kinematic.core/routing-table :my-app)
+
   (run-tests)
   )
